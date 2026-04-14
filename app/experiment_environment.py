@@ -26,9 +26,13 @@ import tempfile
 import threading
 import time
 import webview
-import figma_screens
+try:
+    from . import figma_screens          # imported as app.experiment_environment
+except ImportError:
+    import figma_screens                 # run directly: python app/experiment_environment.py
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Root of the project (one level above the app/ package)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # ── HTML scripts ──────────────────────────────────────────────────────────────

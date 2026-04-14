@@ -5,3 +5,16 @@ __pycache__/
 
 # PyCharm
 .idea/
+
+# --- ADD THESE ---
+
+# Mac OS metadata (Essential since you're on a Mac)
+.DS_Store
+
+# Conda environment folder (if you ever create it inside this directory)
+.env/
+env/
+venv/
+
+# Local data logs (Optional: if your software generates test results)
+data/logs/

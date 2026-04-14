@@ -4,8 +4,7 @@ Application entry point and controller.
 """
 
 import tkinter as tk
-import experiment_environment
-import test_environment
+from app import experiment_environment, test_environment
 
 
 def launch_picker() -> None:

@@ -1,0 +1,13 @@
+name: glukoseTrackingProject
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      - bottle==0.13.4
+      - pywebview==6.2
+      - pyobjc-core==12.1
+      - pyobjc-framework-cocoa==12.1
+      - pyobjc-framework-webkit==12.1
