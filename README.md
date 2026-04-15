@@ -15,6 +15,8 @@ Choose one of the following methods to ensure you have the correct dependencies 
 conda env create -f environment.yml
 conda activate glukoseTrackingProject
 
+### Option B: Pip
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
