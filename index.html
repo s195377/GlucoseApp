@@ -619,7 +619,10 @@
         var key = d.displayTime.getFullYear()+'-'+pad(d.displayTime.getMonth()+1);
         monthSet[key] = true;
       });
-      availableMonths = Object.keys(monthSet).sort();
+      availableMonths = Object.keys(monthSet).sort().filter(function(m) {
+          return m.startsWith('2024');
+      });
+
       // start on the most recent month
       currentMonth = availableMonths[availableMonths.length-1];
     })
