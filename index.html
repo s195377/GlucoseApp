@@ -57,6 +57,18 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 6px 20px 4px; flex-shrink: 0;
     }
+    .topbar-brand {
+      font-family: "Dancing Script", cursive; font-size: 30px; font-weight: 700;
+      color: #1a1a1a; pointer-events: none; user-select: none; line-height: 1;
+    }
+    .chart-header { flex-shrink: 0; text-align: center; margin-bottom: 4px; }
+    .chart-header-title {
+      font-size: 18px; font-weight: 700; color: #1a1a1a; line-height: 1.2;
+    }
+    .chart-header-sub {
+      font-size: 12px; font-weight: 500; color: #1a1a1a;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
     .btn-back {
       width: 36px; height: 36px; border-radius: 50%;
       border: 2px solid #1a1a1a; background: none;
@@ -258,10 +270,10 @@
   <div id="screen-home" class="screen active">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content" style="overflow-y:auto;padding-bottom:16px;">
-      <h1 class="title-script" style="margin-bottom:12px;">Glucosee</h1>
       <div id="profile-recent"
            style="width:100%;background:rgba(255,255,255,0.55);border-radius:16px;
                   overflow:hidden;margin-bottom:16px;font-size:13px;min-height:48px;">
@@ -269,8 +281,8 @@
       </div>
       <!-- Days / Weeks / Months navigation -->
       <div class="tabs" style="margin-top:8px;">
-        <button class="tab active" onclick="navigate('screen-blood-data')">Days</button>
-        <button class="tab"        onclick="navigate('screen-blood-data')">Weeks</button>
+        <button class="tab active" onclick="navigate('screen-blood-daily')">Days</button>
+        <button class="tab"        onclick="navigate('screen-blood-weekly')">Weeks</button>
         <button class="tab"        onclick="navigate('screen-blood-data')">Months</button>
       </div>
 
@@ -291,6 +303,7 @@
   <div id="screen-profile" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
@@ -310,6 +323,7 @@
   <div id="screen-upload" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
@@ -339,6 +353,7 @@
   <div id="screen-settings" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
@@ -347,10 +362,107 @@
     </div>
   </div>
 
+  <!-- SCREEN — Daily view -->
+  <div id="screen-blood-daily" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
+    </div>
+    <div class="chart-screen">
+      <div class="chart-header">
+        <div class="chart-header-title">Blood Sugar Levels</div>
+        <div class="chart-header-sub">Daily</div>
+      </div>
+      <div class="chart-scroll">
+        <!-- Day label -->
+        <div id="daily-label" style="text-align:center;font-size:13px;font-weight:600;
+             color:#334155;flex-shrink:0;padding:2px 0;"></div>
+
+        <!-- Chart flanked by arrows -->
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+          <button onclick="prevDay()"
+                  style="background:none;border:2px solid #1a1a1a;border-radius:50%;
+                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8249;</button>
+          <div id="daily-chart"
+               style="background:white;border-radius:10px;border:1px solid #e2e8f0;
+                      padding:4px;flex:1;min-width:0;overflow:visible;"></div>
+          <button onclick="nextDay()"
+                  style="background:none;border:2px solid #1a1a1a;border-radius:50%;
+                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8250;</button>
+        </div>
+
+        <!-- Period filter tabs -->
+        <div class="tabs" style="gap:5px;flex-shrink:0;">
+          <button class="tab active" onclick="setDayPeriod(this,'All')"       style="font-size:11px;padding:8px 0;">All</button>
+          <button class="tab"        onclick="setDayPeriod(this,'Morning')"   style="font-size:11px;padding:8px 0;">Morning</button>
+          <button class="tab"        onclick="setDayPeriod(this,'Afternoon')" style="font-size:11px;padding:8px 0;">Afternoon</button>
+          <button class="tab"        onclick="setDayPeriod(this,'Evening')"   style="font-size:11px;padding:8px 0;">Evening</button>
+          <button class="tab"        onclick="setDayPeriod(this,'Night')"     style="font-size:11px;padding:8px 0;">Night</button>
+        </div>
+
+        <!-- Reading list -->
+        <div id="daily-list" style="background:white;border-radius:10px;
+             border:1px solid #e2e8f0;overflow:hidden;flex-shrink:0;font-size:13px;
+             max-height:220px;overflow-y:auto;">
+          <div class="chart-loading">Loading…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN — Weekly view -->
+  <div id="screen-blood-weekly" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
+    </div>
+    <div class="chart-screen">
+      <div class="chart-header"><div class="chart-header-title">Blood Sugar Levels</div><div class="chart-header-sub">Weekly</div></div>
+
+      <div class="chart-scroll">
+        <!-- Week label -->
+        <div id="weekly-label" style="text-align:center;font-size:13px;font-weight:600;
+             color:#334155;flex-shrink:0;padding:2px 0;"></div>
+
+        <!-- Chart flanked by arrows -->
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+          <button onclick="prevWeek()"
+                  style="background:none;border:2px solid #1a1a1a;border-radius:50%;
+                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8249;</button>
+          <div id="weekly-chart"
+               style="background:white;border-radius:10px;border:1px solid #e2e8f0;
+                      padding:6px;flex:1;overflow:hidden;"></div>
+          <button onclick="nextWeek()"
+                  style="background:none;border:2px solid #1a1a1a;border-radius:50%;
+                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8250;</button>
+        </div>
+
+        <!-- Period filter tabs — between chart and log -->
+        <div class="tabs" style="gap:5px;flex-shrink:0;">
+          <button class="tab active" onclick="setWeekPeriod(this,'All')"       style="font-size:11px;padding:8px 0;">All</button>
+          <button class="tab"        onclick="setWeekPeriod(this,'Morning')"   style="font-size:11px;padding:8px 0;">Morning</button>
+          <button class="tab"        onclick="setWeekPeriod(this,'Afternoon')" style="font-size:11px;padding:8px 0;">Afternoon</button>
+          <button class="tab"        onclick="setWeekPeriod(this,'Evening')"   style="font-size:11px;padding:8px 0;">Evening</button>
+          <button class="tab"        onclick="setWeekPeriod(this,'Night')"     style="font-size:11px;padding:8px 0;">Night</button>
+        </div>
+
+        <!-- Reading list -->
+        <div id="weekly-list" style="background:white;border-radius:10px;
+             border:1px solid #e2e8f0;overflow:hidden;flex-shrink:0;font-size:13px;
+             max-height:220px;overflow-y:auto;">
+          <div class="chart-loading">Loading…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- SCREEN 4 — Blood sugar: Calendar overview -->
   <div id="screen-blood-calendar" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content-embed">
@@ -368,17 +480,15 @@
   <div id="screen-blood-data" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="chart-screen">
-      <div class="chart-title">Blood sugar</div>
-
-      <!-- View mode tabs -->
-      <div class="tabs" style="margin-bottom:10px;">
-        <button class="tab active"  onclick="setMode(this,'max')">Daily Max</button>
-        <button class="tab"         onclick="setMode(this,'min')">Daily Min</button>
-        <button class="tab"         onclick="setMode(this,'mean')">Average</button>
+      <div class="chart-header">
+        <div class="chart-header-title">Blood Sugar Levels</div>
+        <div class="chart-header-sub">Monthly</div>
       </div>
+
 
       <div class="chart-scroll">
         <div id="vega-chart"><div class="chart-loading">Loading chart…</div></div>
@@ -428,6 +538,13 @@
             <span style="margin-right:8px;">High</span>
             <span>Very high</span>
           </div>
+        </div>
+
+        <!-- View mode tabs — below legend -->
+        <div class="tabs" style="gap:5px;flex-shrink:0;">
+          <button class="tab active" onclick="setMode(this,'max')"  style="font-size:11px;padding:8px 0;">Daily Max</button>
+          <button class="tab"        onclick="setMode(this,'min')"  style="font-size:11px;padding:8px 0;">Daily Min</button>
+          <button class="tab"        onclick="setMode(this,'mean')" style="font-size:11px;padding:8px 0;">Average</button>
         </div>
 
         <div id="reading-list"><div class="chart-loading">Click a date to see readings</div></div>
@@ -707,6 +824,422 @@
     );
   }
 
+  // ════════════════════════════════════════════════════════════════════════
+  //  DAILY VIEW
+  // ════════════════════════════════════════════════════════════════════════
+  var dailyStartDays   = [];   // sorted array of 'YYYY-MM-DD' strings (2024, data only)
+  var currentDayIdx    = 0;
+  var currentDayFilter = 'All';
+
+  function initDailyNav() {
+    if (!chartData || !chartData.length) return;
+    var seen = {};
+    chartData.forEach(function(d) {
+      if (d.displayTime.getFullYear() === 2024) seen[d.dayKey] = true;
+    });
+    dailyStartDays = Object.keys(seen).sort();
+    currentDayIdx  = dailyStartDays.length - 1;
+  }
+
+  function updateDailyLabel() {
+    var key = dailyStartDays[currentDayIdx];
+    document.getElementById('daily-label').textContent =
+      new Date(key + 'T12:00:00').toLocaleDateString('en-GB',
+        { weekday:'short', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function prevDay() {
+    if (currentDayIdx > 0) { currentDayIdx--; renderDaily(); }
+  }
+  function nextDay() {
+    if (currentDayIdx < dailyStartDays.length-1) { currentDayIdx++; renderDaily(); }
+  }
+
+  function setDayPeriod(btn, period) {
+    var tabs = btn.closest('.tabs').querySelectorAll('.tab');
+    for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
+    btn.classList.add('active');
+    currentDayFilter = period;
+    renderDaily();
+  }
+
+  function buildDailySpec(dayData, dayStr, filter) {
+    var enriched = dayData.map(function(d) {
+      var obs = d.observation;
+      // 0 = normal (green), 1 = extreme (red)
+      var severity = (obs >= 5 && obs <= 7) ? 0
+        : obs > 7  ? Math.min(1, (obs - 7) / (11.5 - 7))
+        : obs >= 3.8 ? Math.min(1, (5 - obs) / (5 - 3.8))
+        : 1;
+      return Object.assign({}, d, { isoTime: d.displayTime.toISOString(), severity: severity });
+    });
+
+    // ── Monotone cubic spline (Fritsch-Carlson) sampled into fine sub-segments ──
+    // This gives a smooth coloured curve identical in shape to the original soft line.
+    var segments = [];
+    if (enriched.length >= 2) {
+      var xs = enriched.map(function(p) { return p.displayTime.getTime(); });
+      var ys = enriched.map(function(p) { return p.observation; });
+      var n  = enriched.length;
+
+      // Step 1 – slopes between consecutive points
+      var delta = [];
+      for (var i = 0; i < n - 1; i++) delta[i] = (ys[i+1] - ys[i]) / (xs[i+1] - xs[i]);
+
+      // Step 2 – initial tangents
+      var m = new Array(n);
+      m[0] = delta[0]; m[n-1] = delta[n-2];
+      for (var i = 1; i < n - 1; i++)
+        m[i] = (delta[i-1] * delta[i] <= 0) ? 0 : (delta[i-1] + delta[i]) / 2;
+
+      // Step 3 – monotonicity adjustment
+      for (var i = 0; i < n - 1; i++) {
+        if (Math.abs(delta[i]) < 1e-12) { m[i] = m[i+1] = 0; continue; }
+        var alpha = m[i] / delta[i], beta = m[i+1] / delta[i];
+        var s = alpha*alpha + beta*beta;
+        if (s > 9) { var tau = 3 / Math.sqrt(s); m[i] *= tau/alpha; m[i+1] *= tau/beta; }
+      }
+
+      // Step 4 – sample each segment into STEPS sub-segments
+      var STEPS = 20;
+      for (var si = 0; si < n - 1; si++) {
+        var h    = xs[si+1] - xs[si];
+        var sev0 = enriched[si].severity, sev1 = enriched[si+1].severity;
+        for (var step = 0; step < STEPS; step++) {
+          var t0 = step / STEPS, t1 = (step + 1) / STEPS;
+          // Cubic Hermite evaluation
+          function hermite(t) {
+            var t2=t*t, t3=t2*t;
+            return (2*t3-3*t2+1)*ys[si] + (t3-2*t2+t)*m[si]*h +
+                   (-2*t3+3*t2)*ys[si+1] + (t3-t2)*m[si+1]*h;
+          }
+          var x0ms = xs[si] + t0*h, x1ms = xs[si] + t1*h;
+          var y0   = hermite(t0),   y1   = hermite(t1);
+          var avgSev = (sev0 + (sev1-sev0)*t0 + sev0 + (sev1-sev0)*t1) / 2;
+          var subIdx = si * STEPS + step;
+          segments.push({ isoTime: new Date(x0ms).toISOString(), observation: y0, segIdx: subIdx, segSeverity: avgSev });
+          segments.push({ isoTime: new Date(x1ms).toISOString(), observation: y1, segIdx: subIdx, segSeverity: avgSev });
+        }
+      }
+    }
+
+    var startISO = dayStr + 'T00:00:00';
+    var endISO   = dayStr + 'T23:59:59';
+    var nightBands = [
+      { start: dayStr + 'T00:00:00', end: dayStr + 'T06:00:00' },
+      { start: dayStr + 'T23:00:00', end: dayStr + 'T23:59:59' }
+    ];
+
+    var severityColor = {
+      field: 'severity', type: 'quantitative',
+      scale: { domain: [0, 0.35, 1], range: ['#22c55e', '#eab308', '#ef4444'], clamp: true },
+      legend: null
+    };
+    var periodColorEnc = {
+      field: 'period', type: 'nominal',
+      scale: { domain: ['Morning','Afternoon','Evening','Night'],
+               range:  ['#f59e0b','#10b981','#6366f1','#64748b'] },
+      legend: null
+    };
+
+    var opacityArea = {
+      condition: { test: "datum.period === '" + filter + "'", value: 0.15 },
+      value: 0
+    };
+    var opacityLine = {
+      condition: { test: "'" + filter + "' === 'All'", value: 1 },
+      value: 0.2
+    };
+    var opacityDot = {
+      condition: [
+        { test: "'" + filter + "' === 'All'",       value: 1 },
+        { test: "datum.period === '" + filter + "'", value: 1 }
+      ],
+      value: 0.1
+    };
+
+    var xEnc = {
+      field: 'isoTime', type: 'temporal',
+      scale: { domain: [startISO, endISO] },
+      axis: { format: '%H:%M', labelFontSize: 10, labelColor: '#64748b',
+              ticks: false, domain: false, gridColor: '#f1f5f9', tickCount: 6 },
+      title: null
+    };
+    var yEnc = {
+      field: 'observation', type: 'quantitative',
+      scale: { domain: [0, 20] },
+      axis: { labelFontSize: 10, labelColor: '#64748b',
+              ticks: false, domain: false, gridColor: '#f1f5f9' },
+      title: 'mmol/l'
+    };
+
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 220, height: 180,
+      autosize: { type: 'fit', contains: 'padding' },
+      resolve: { scale: { x: 'shared', y: 'shared', color: 'independent' } },
+      layer: [
+        // Night shading
+        { data: { values: nightBands },
+          mark: { type: 'rect', color: '#f1f5f9', opacity: 1 },
+          encoding: { x: { field:'start', type:'temporal' }, x2: { field:'end', type:'temporal' } }
+        },
+        // Period area fill (highlight mode only)
+        { data: { values: enriched },
+          mark: { type: 'area', line: false, interpolate: 'monotone' },
+          encoding: { x: xEnc, y: yEnc, color: periodColorEnc, opacity: opacityArea }
+        },
+        // Line segments — each consecutive pair coloured by averaged severity
+        { data: { values: segments },
+          mark: { type: 'line', size: 2.5 },
+          encoding: {
+            x: xEnc, y: yEnc,
+            color: { field: 'segSeverity', type: 'quantitative',
+                     scale: { domain: [0, 0.35, 1], range: ['#22c55e', '#eab308', '#ef4444'], clamp: true },
+                     legend: null },
+            detail: { field: 'segIdx', type: 'ordinal' },
+            opacity: opacityLine
+          }
+        },
+        // Dots — same severity color scale
+        { data: { values: enriched },
+          mark: { type: 'circle', size: 70, stroke: 'white', strokeWidth: 1.5 },
+          encoding: {
+            x: xEnc, y: yEnc,
+            color: severityColor,
+            opacity: opacityDot,
+            tooltip: [
+              { field: 'isoTime',     type: 'temporal',    title: 'Time',    format: '%H:%M' },
+              { field: 'observation', type: 'quantitative', title: 'Glucose', format: '.1f' },
+              { field: 'period',      type: 'nominal',      title: 'Period' }
+            ]
+          }
+        }
+      ],
+      config: { view: { stroke: null }, axis: { domain: false } }
+    };
+  }
+
+  function renderDaily() {
+    if (!chartData || !dailyStartDays.length) return;
+    updateDailyLabel();
+    var dayStr  = dailyStartDays[currentDayIdx];
+    var dayData = chartData.filter(function(d){ return d.dayKey === dayStr; })
+                           .sort(function(a,b){ return a.displayTime - b.displayTime; });
+
+    vegaEmbed(document.getElementById('daily-chart'),
+              buildDailySpec(dayData, dayStr, currentDayFilter), { actions: false });
+
+    var listDiv = document.getElementById('daily-list');
+    var rows = dayData.map(function(r) {
+      var hi  = currentDayFilter === 'All' || r.period === currentDayFilter;
+      var th  = statusTheme(r.observation);
+      var col = PERIOD_COLORS[r.period] || '#94a3b8';
+      var ts2 = r.displayTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
+      var bl  = (hi && currentDayFilter !== 'All') ? col : 'transparent';
+      var shortL = { Morning:'M', Afternoon:'A', Evening:'E', Night:'N' }[r.period] || '?';
+      return '<div style="display:flex;align-items:center;background:'+th.bg
+        +';border-bottom:1px solid #f1f5f9;border-left:4px solid '+bl
+        +';opacity:'+(hi?'1':'0.2')+'">'
+        +'<div style="flex:2;padding:6px 10px;color:'+th.text+';font-weight:600;white-space:nowrap;">'+ts2+'</div>'
+        +'<div style="flex:1;padding:6px 4px;text-align:center;">'
+        +'<span style="background:'+col+';color:#fff;padding:2px 8px;border-radius:6px;font-size:0.76em;">'+shortL+'</span></div>'
+        +'<div style="flex:1.5;padding:6px 10px 6px 0;text-align:right;font-weight:700;color:'+th.text+';white-space:nowrap;font-size:0.85em;">'
+        +r.observation.toFixed(1)+'<small style="font-weight:400;font-size:0.78em;"> mmol/l</small></div>'
+        +'</div>';
+    }).join('');
+
+    listDiv.innerHTML = dayData.length
+      ? '<div style="padding:8px 13px;font-weight:700;border-bottom:1px solid #f1f5f9;'
+        +'display:flex;justify-content:space-between;align-items:center;">'
+        +'<span style="color:#334155;font-size:13px;">Daily log</span>'
+        +'<span style="background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:20px;font-size:0.75em;">'
+        +dayData.length+' readings</span></div>'
+        +'<div style="display:flex;background:#f8fafc;border-bottom:2px solid #e2e8f0;'
+        +'font-size:0.68em;color:#64748b;font-weight:600;text-transform:uppercase;">'
+        +'<div style="flex:2;padding:5px 10px;">Time</div>'
+        +'<div style="flex:1;padding:5px 4px;text-align:center;">Period</div>'
+        +'<div style="flex:1.5;padding:5px 10px 5px 0;text-align:right;">Glucose</div></div>'
+        + rows
+      : '<div class="chart-loading">No readings for this day</div>';
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  WEEKLY VIEW
+  // ════════════════════════════════════════════════════════════════════════
+  var weeklyStartDays  = [];
+  var currentWeekIdx   = 0;
+  var currentWeekFilter = 'All';
+
+  function initWeeklyNav() {
+    if (!chartData || !chartData.length) return;
+    // Only 2024 data
+    var data2024 = chartData.filter(function(d){ return d.displayTime.getFullYear() === 2024; });
+    if (!data2024.length) return;
+    var minTs = Math.min.apply(null, data2024.map(function(d){ return d.displayTime.getTime(); }));
+    var maxTs = Math.max.apply(null, data2024.map(function(d){ return d.displayTime.getTime(); }));
+    var start = new Date(minTs); start.setHours(0,0,0,0);
+    weeklyStartDays = [];
+    var cur = new Date(start.getTime());
+    while (cur.getTime() <= maxTs) {
+      var wStart = cur.getTime();
+      var wEnd   = wStart + 7*24*60*60*1000;
+      var hasData = data2024.some(function(d){
+        var t = d.displayTime.getTime(); return t >= wStart && t < wEnd;
+      });
+      if (hasData) weeklyStartDays.push(wStart);
+      cur = new Date(wEnd);
+    }
+    currentWeekIdx = weeklyStartDays.length - 1;
+  }
+
+  function isoWeekNumber(date) {
+    // ISO 8601 week number (Monday-start, used in Denmark)
+    var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    var day = d.getUTCDay() || 7;          // make Sunday = 7
+    d.setUTCDate(d.getUTCDate() + 4 - day); // Thursday of current week
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    var week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return { week: week, year: d.getUTCFullYear() };
+  }
+
+  function updateWeeklyLabel() {
+    var ts  = weeklyStartDays[currentWeekIdx];
+    var s   = new Date(ts);
+    var e   = new Date(ts + 6*24*60*60*1000);
+    var fmt = function(d){ return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}); };
+    var iso = isoWeekNumber(s);
+    document.getElementById('weekly-label').textContent =
+      iso.year + '  ·  Week ' + iso.week + '  (' + fmt(s) + ' – ' + fmt(e) + ')';
+  }
+
+  function prevWeek() {
+    if (currentWeekIdx > 0) { currentWeekIdx--; renderWeekly(); }
+  }
+  function nextWeek() {
+    if (currentWeekIdx < weeklyStartDays.length-1) { currentWeekIdx++; renderWeekly(); }
+  }
+
+  function setWeekPeriod(btn, period) {
+    var tabs = btn.closest('.tabs').querySelectorAll('.tab');
+    for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
+    btn.classList.add('active');
+    currentWeekFilter = period;
+    renderWeekly();
+  }
+
+  function buildWeeklySpec(weekData, filter) {
+    var enriched = weekData.map(function(d){
+      return Object.assign({}, d, { isoTime: d.displayTime.toISOString() });
+    });
+    var opacityBar = filter === 'All'
+      ? { value: 0.8 }
+      : { condition: { test: "datum.period === '" + filter + "'", value: 1.0 }, value: 0.07 };
+    var opacityDot = filter === 'All'
+      ? { value: 1.0 }
+      : { condition: { test: "datum.period === '" + filter + "'", value: 1.0 }, value: 0.05 };
+
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      data: { values: enriched },
+      width: 255, height: 180,
+      layer: [
+        // Normal range band
+        { mark: { type: 'rect', color: '#dcfce7', opacity: 0.45 },
+          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 10 } } },
+        // Threshold rules
+        { mark: { type: 'rule', color: '#3b82f6', strokeDash: [4,2], size: 1 },
+          encoding: { y: { datum: 4.4, type: 'quantitative' } } },
+        { mark: { type: 'rule', color: '#ef4444', strokeDash: [4,2], size: 1 },
+          encoding: { y: { datum: 10,  type: 'quantitative' } } },
+        // Bars (period coloured)
+        { mark: { type: 'bar', width: 6, tooltip: true },
+          encoding: {
+            x: { field: 'isoTime', type: 'temporal', title: null,
+                 axis: { format: '%a %d', labelAngle: 0, labelFontSize: 10,
+                         labelColor: '#64748b', ticks: false, domain: false,
+                         grid: true, gridColor: '#f1f5f9' } },
+            y: { field: 'observation', type: 'quantitative', title: 'mmol/l',
+                 scale: { domain: [0, 20] },
+                 axis: { labelFontSize: 10, labelColor: '#64748b',
+                         ticks: false, domain: false, gridColor: '#f1f5f9' } },
+            color: { field: 'period', type: 'nominal',
+                     scale: { domain: ['Morning','Afternoon','Evening','Night'],
+                              range: ['#f59e0b','#10b981','#6366f1','#64748b'] },
+                     legend: null },
+            opacity: opacityBar,
+            tooltip: [
+              { field: 'isoTime',      type: 'temporal',    title: 'Time',    format: '%a %e %b · %H:%M' },
+              { field: 'observation',  type: 'quantitative', title: 'Glucose', format: '.1f' },
+              { field: 'period',       type: 'nominal',      title: 'Period' }
+            ]
+          }
+        },
+        // Out-of-range dots
+        { mark: { type: 'circle', size: 35 },
+          transform: [{ filter: 'datum.observation > 10 || datum.observation < 4.4' }],
+          encoding: {
+            x: { field: 'isoTime', type: 'temporal' },
+            y: { field: 'observation', type: 'quantitative' },
+            color: { condition: { test: 'datum.observation > 10', value: '#ef4444' }, value: '#3b82f6' },
+            opacity: opacityDot
+          }
+        }
+      ],
+      config: { view: { stroke: null } }
+    };
+  }
+
+  function renderWeekly() {
+    if (!chartData || !weeklyStartDays.length) return;
+    updateWeeklyLabel();
+    var startTs  = weeklyStartDays[currentWeekIdx];
+    var endTs    = startTs + 7*24*60*60*1000;
+    var weekData = chartData.filter(function(d){
+      var t = d.displayTime.getTime(); return t >= startTs && t < endTs;
+    });
+
+    vegaEmbed(document.getElementById('weekly-chart'),
+              buildWeeklySpec(weekData, currentWeekFilter), { actions: false });
+
+    var listDiv = document.getElementById('weekly-list');
+    var sorted  = weekData.slice().sort(function(a,b){ return a.displayTime - b.displayTime; });
+
+    var rows = sorted.map(function(r) {
+      var hi  = currentWeekFilter === 'All' || r.period === currentWeekFilter;
+      var th  = statusTheme(r.observation);
+      var col = PERIOD_COLORS[r.period] || '#94a3b8';
+      var ds  = r.displayTime.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      var ts2 = r.displayTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
+      var bl  = (hi && currentWeekFilter !== 'All') ? col : 'transparent';
+      return '<div style="display:flex;align-items:center;background:'+th.bg
+        +';border-bottom:1px solid #f1f5f9;border-left:4px solid '+bl
+        +';opacity:'+(hi?'1':'0.18')+'">'
+        +'<div style="flex:2.5;padding:6px 8px;">'
+        +'<span style="color:'+th.text+';font-weight:600;display:block;font-size:0.78em;">'+ds+'</span>'
+        +'<span style="color:#94a3b8;font-size:0.72em;">'+ts2+'</span></div>'
+        +'<div style="flex:1.5;padding:6px 4px;">'
+        +'<span style="background:'+col+';color:#fff;padding:2px 6px;border-radius:6px;font-size:0.72em;white-space:nowrap;">'+r.period+'</span></div>'
+        +'<div style="flex:1.5;padding:6px 10px 6px 0;text-align:right;font-weight:700;color:'+th.text+';white-space:nowrap;font-size:0.85em;">'
+        +r.observation.toFixed(1)+'<small style="font-weight:400;font-size:0.78em;"> mmol/l</small></div>'
+        +'</div>';
+    }).join('');
+
+    listDiv.innerHTML = sorted.length
+      ? '<div style="padding:8px 13px;font-weight:700;border-bottom:1px solid #f1f5f9;'
+        +'display:flex;justify-content:space-between;align-items:center;">'
+        +'<span style="color:#334155;font-size:13px;">Weekly log</span>'
+        +'<span style="background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:20px;font-size:0.75em;">'
+        +sorted.length+' readings</span></div>'
+        +'<div style="display:flex;background:#f8fafc;border-bottom:2px solid #e2e8f0;'
+        +'font-size:0.68em;color:#64748b;font-weight:600;text-transform:uppercase;">'
+        +'<div style="flex:2.5;padding:5px 8px;">Date &amp; Time</div>'
+        +'<div style="flex:1.5;padding:5px 4px;">Period</div>'
+        +'<div style="flex:1.5;padding:5px 10px 5px 0;text-align:right;">Glucose</div></div>'
+        + rows
+      : '<div class="chart-loading">No data for this week</div>';
+  }
+
   function setMode(btn, mode) {
     var tabs = btn.closest('.tabs').querySelectorAll('.tab');
     for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
@@ -732,6 +1265,8 @@
 
       // start on the most recent month
       currentMonth = availableMonths[availableMonths.length-1];
+      initDailyNav();
+      initWeeklyNav();
       showRecentOnProfile();
     })
     .catch(function(e){ console.warn('CSV load failed:', e); });
@@ -764,7 +1299,9 @@
     if (next) {
       next.classList.add('active');
       navStack.push(screenId);
-      if (screenId === 'screen-blood-data') renderChart();
+      if (screenId === 'screen-blood-data')    renderChart();
+      if (screenId === 'screen-blood-weekly')  renderWeekly();
+      if (screenId === 'screen-blood-daily')   renderDaily();
     }
     phone.style.background = BG;
   }
