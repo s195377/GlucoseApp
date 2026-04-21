@@ -182,10 +182,54 @@
     .chart-loading {
       padding: 40px; text-align: center; color: #94a3b8; font-style: italic;
     }
+
+    /* ── Hamburger drawer ── */
+    .drawer-overlay {
+      display: none; position: absolute; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.35);
+    }
+    .drawer-overlay.open { display: block; }
+    .drawer {
+      position: absolute; top: 0; right: 0; bottom: 0; width: 220px;
+      background: #fff; box-shadow: -4px 0 20px rgba(0,0,0,0.18);
+      display: flex; flex-direction: column; padding: 24px 0 32px;
+    }
+    .drawer-close {
+      align-self: flex-end; margin-right: 18px; margin-bottom: 20px;
+      background: none; border: none; font-size: 24px; cursor: pointer; color: #1a1a1a;
+    }
+    .drawer-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 24px; font-size: 16px; font-weight: 500; color: #1a1a1a;
+      background: none; border: none; cursor: pointer; width: 100%; text-align: left;
+    }
+    .drawer-item:hover { background: #f8fafc; }
+    .drawer-divider { height: 1px; background: #e2e8f0; margin: 8px 0; }
   </style>
 </head>
 <body>
 <div class="phone" id="phone">
+
+  <!-- Hamburger drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer(event)">
+    <div class="drawer">
+      <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+      <button class="drawer-item" onclick="drawerNavigate('screen-home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+        Home
+      </button>
+      <div class="drawer-divider"></div>
+      <button class="drawer-item" onclick="drawerNavigate('screen-profile')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Profile
+      </button>
+      <div class="drawer-divider"></div>
+      <button class="drawer-item" onclick="drawerNavigate('screen-settings')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+  </div>
 
   <!-- Status bar -->
   <div class="status-bar">
@@ -210,11 +254,44 @@
     </div>
   </div>
 
-  <!-- SCREEN 1 — Profile -->
-  <div id="screen-profile" class="screen active">
+  <!-- SCREEN 1 — Home (landing screen) -->
+  <div id="screen-home" class="screen active">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
-      <button class="btn-menu">&#9776;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
+    </div>
+    <div class="content" style="overflow-y:auto;padding-bottom:16px;">
+      <h1 class="title-script" style="margin-bottom:12px;">Glucosee</h1>
+      <div id="profile-recent"
+           style="width:100%;background:rgba(255,255,255,0.55);border-radius:16px;
+                  overflow:hidden;margin-bottom:16px;font-size:13px;min-height:48px;">
+        <div class="chart-loading" style="padding:16px;">Loading latest readings…</div>
+      </div>
+      <!-- Days / Weeks / Months navigation -->
+      <div class="tabs" style="margin-top:8px;">
+        <button class="tab active" onclick="navigate('screen-blood-data')">Days</button>
+        <button class="tab"        onclick="navigate('screen-blood-data')">Weeks</button>
+        <button class="tab"        onclick="navigate('screen-blood-data')">Months</button>
+      </div>
+
+      <div style="flex:1;"></div>
+
+      <button class="action-btn" onclick="navigate('screen-blood-data')" style="margin-bottom:0;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <rect x="2"  y="13" width="5" height="8"  rx="1" fill="#1a1a1a"/>
+          <rect x="9"  y="8"  width="5" height="13" rx="1" fill="#1a1a1a"/>
+          <rect x="16" y="3"  width="5" height="18" rx="1" fill="#1a1a1a"/>
+        </svg>
+        View data
+      </button>
+    </div>
+  </div>
+
+  <!-- SCREEN 1b — Profile (hamburger menu) -->
+  <div id="screen-profile" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
       <h1 class="title-script">Profile</h1>
@@ -226,30 +303,6 @@
           <p>Type 1 diabetes</p>
         </div>
       </div>
-      <button class="action-btn" onclick="navigate('screen-blood-calendar')">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <rect x="2"  y="13" width="5" height="8"  rx="1" fill="#1a1a1a"/>
-          <rect x="9"  y="8"  width="5" height="13" rx="1" fill="#1a1a1a"/>
-          <rect x="16" y="3"  width="5" height="18" rx="1" fill="#1a1a1a"/>
-        </svg>
-        View data
-      </button>
-      <button class="action-btn" onclick="navigate('screen-settings')">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-             stroke="#1a1a1a" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06
-                   a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09
-                   A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83
-                   l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
-                   A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
-                   l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09
-                   a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83
-                   l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09
-                   a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        Settings
-      </button>
     </div>
   </div>
 
@@ -257,7 +310,7 @@
   <div id="screen-upload" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
-      <button class="btn-menu">&#9776;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
       <h2 class="title-plain">Upload data</h2>
@@ -286,7 +339,7 @@
   <div id="screen-settings" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
-      <button class="btn-menu">&#9776;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content">
       <h1 class="title-script">Settings</h1>
@@ -298,7 +351,7 @@
   <div id="screen-blood-calendar" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
-      <button class="btn-menu">&#9776;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="content-embed">
       <h2 class="title-mono">Blood sugar</h2>
@@ -315,7 +368,7 @@
   <div id="screen-blood-data" class="screen">
     <div class="topbar">
       <button class="btn-back" onclick="goBack()">&#8592;</button>
-      <button class="btn-menu">&#9776;</button>
+      <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="chart-screen">
       <div class="chart-title">Blood sugar</div>
@@ -600,6 +653,60 @@
       +'</div>';
   }
 
+  function showRecentOnProfile() {
+    if (!chartData || !chartData.length) return;
+    var div = document.getElementById('profile-recent');
+    if (!div) return;
+
+    // collect the 2 most recent distinct days
+    var allDays = [];
+    var seen = {};
+    chartData.slice().sort(function(a,b){ return b.displayTime - a.displayTime; })
+      .forEach(function(d) {
+        if (!seen[d.dayKey]) { seen[d.dayKey] = true; allDays.push(d.dayKey); }
+      });
+    var recentDays = allDays.slice(0, 2); // newest first
+
+    function makeRows(dayKey) {
+      var readings = chartData.filter(function(d){ return d.dayKey === dayKey; })
+                              .sort(function(a,b){ return a.displayTime - b.displayTime; });
+      var dateLabel = new Date(dayKey + 'T12:00:00').toLocaleDateString('en-GB',
+                     { weekday:'short', day:'numeric', month:'long' });
+      var rows = readings.map(function(r) {
+        var th  = statusTheme(r.observation);
+        var col = PERIOD_COLORS[r.period] || '#94a3b8';
+        var t   = r.displayTime.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
+        return '<div style="display:flex;align-items:center;background:'+th.bg
+          +';border-bottom:1px solid #f1f5f9;border-left:4px solid '+col+';">'
+          +'<div style="flex:2;padding:6px 10px;color:'+th.text+';font-weight:600;white-space:nowrap;">'+t+'</div>'
+          +'<div style="flex:2;padding:6px 6px;">'
+          +'<span style="background:'+col+';color:#fff;padding:2px 7px;border-radius:6px;'
+          +'font-size:0.76em;white-space:nowrap;">'+r.period+'</span></div>'
+          +'<div style="flex:1.5;padding:6px 10px 6px 0;text-align:right;font-weight:700;'
+          +'color:'+th.text+';white-space:nowrap;">'
+          +r.observation.toFixed(1)+'<small style="font-weight:400;font-size:0.78em;"> mmol/l</small></div>'
+          +'</div>';
+      }).join('');
+
+      return '<div style="padding:8px 13px;font-weight:700;border-bottom:1px solid #f1f5f9;'
+        +'display:flex;justify-content:space-between;align-items:center;">'
+        +'<span style="color:#334155;font-size:13px;">'+dateLabel+'</span>'
+        +'<span style="background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:20px;font-size:0.75em;">'
+        +readings.length+' entries</span></div>'
+        +'<div>'
+        +'<div style="display:flex;background:#f8fafc;border-bottom:2px solid #e2e8f0;'
+        +'font-size:0.7em;color:#64748b;font-weight:600;text-transform:uppercase;">'
+        +'<div style="flex:2;padding:5px 10px;">Time</div>'
+        +'<div style="flex:2;padding:5px 6px;">Period</div>'
+        +'<div style="flex:1.5;padding:5px 10px 5px 0;text-align:right;">Glucose</div></div>'
+        + rows + '</div>';
+    }
+
+    div.innerHTML = recentDays.map(makeRows).join(
+      '<div style="height:8px;background:rgba(0,0,0,0.06);"></div>'
+    );
+  }
+
   function setMode(btn, mode) {
     var tabs = btn.closest('.tabs').querySelectorAll('.tab');
     for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
@@ -625,14 +732,29 @@
 
       // start on the most recent month
       currentMonth = availableMonths[availableMonths.length-1];
+      showRecentOnProfile();
     })
     .catch(function(e){ console.warn('CSV load failed:', e); });
+
+  // ── Drawer ────────────────────────────────────────────────────────────
+  function openDrawer() {
+    document.getElementById('drawer-overlay').classList.add('open');
+  }
+  function closeDrawer(e) {
+    // if called from overlay click, only close when clicking the backdrop itself
+    if (e && e.target && e.target.id !== 'drawer-overlay') return;
+    document.getElementById('drawer-overlay').classList.remove('open');
+  }
+  function drawerNavigate(screenId) {
+    document.getElementById('drawer-overlay').classList.remove('open');
+    navigate(screenId);
+  }
 
   // ════════════════════════════════════════════════════════════════════════
   //  ROUTER
   // ════════════════════════════════════════════════════════════════════════
   var BG       = 'linear-gradient(to bottom, #F4615C 0%, #ffffff 100%)';
-  var navStack = ['screen-profile'];
+  var navStack = ['screen-home'];
   var phone    = document.getElementById('phone');
 
   function navigate(screenId) {
