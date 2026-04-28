@@ -931,11 +931,16 @@
         m[i] = (delta[i-1] * delta[i] <= 0) ? 0 : (delta[i-1] + delta[i]) / 2;
 
       // Step 3 – monotonicity adjustment
+      // Guard: when m[i]=0, alpha=0 and tau/alpha=Infinity → 0*Infinity=NaN; skip those.
       for (var i = 0; i < n - 1; i++) {
         if (Math.abs(delta[i]) < 1e-12) { m[i] = m[i+1] = 0; continue; }
         var alpha = m[i] / delta[i], beta = m[i+1] / delta[i];
         var s = alpha*alpha + beta*beta;
-        if (s > 9) { var tau = 3 / Math.sqrt(s); m[i] *= tau/alpha; m[i+1] *= tau/beta; }
+        if (s > 9) {
+          var tau = 3 / Math.sqrt(s);
+          if (alpha !== 0) m[i]   *= tau / alpha;
+          if (beta  !== 0) m[i+1] *= tau / beta;
+        }
       }
 
       // Step 4 – sample each segment into STEPS sub-segments
@@ -943,16 +948,18 @@
       for (var si = 0; si < n - 1; si++) {
         var h    = xs[si+1] - xs[si];
         var sev0 = enriched[si].severity, sev1 = enriched[si+1].severity;
-        for (var step = 0; step < STEPS; step++) {
-          var t0 = step / STEPS, t1 = (step + 1) / STEPS;
-          // Cubic Hermite evaluation
-          function hermite(t) {
+        var _si = si, _h = h; // capture for the closure below
+        var evalHermite = (function(si, h) {
+          return function(t) {
             var t2=t*t, t3=t2*t;
             return (2*t3-3*t2+1)*ys[si] + (t3-2*t2+t)*m[si]*h +
                    (-2*t3+3*t2)*ys[si+1] + (t3-t2)*m[si+1]*h;
-          }
-          var x0ms = xs[si] + t0*h, x1ms = xs[si] + t1*h;
-          var y0   = hermite(t0),   y1   = hermite(t1);
+          };
+        })(_si, _h);
+        for (var step = 0; step < STEPS; step++) {
+          var t0 = step / STEPS, t1 = (step + 1) / STEPS;
+          var x0ms = xs[_si] + t0*_h, x1ms = xs[_si] + t1*_h;
+          var y0   = evalHermite(t0),  y1   = evalHermite(t1);
           var avgSev = (sev0 + (sev1-sev0)*t0 + sev0 + (sev1-sev0)*t1) / 2;
           var subIdx = si * STEPS + step;
           segments.push({ isoTime: new Date(x0ms).toISOString(), observation: y0, segIdx: subIdx, segSeverity: avgSev });
@@ -1186,9 +1193,9 @@
         { mark: { type: 'rect', color: '#dcfce7', opacity: 0.45 },
           encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 10 } } },
         // Threshold rules
-        { mark: { type: 'rule', color: '#3b82f6', strokeDash: [4,2], size: 1 },
+        { mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
           encoding: { y: { datum: 4.4, type: 'quantitative' } } },
-        { mark: { type: 'rule', color: '#ef4444', strokeDash: [4,2], size: 1 },
+        { mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
           encoding: { y: { datum: 10,  type: 'quantitative' } } },
         // Bars (period coloured)
         { mark: { type: 'bar', width: 6, tooltip: true },
@@ -1219,7 +1226,7 @@
           encoding: {
             x: { field: 'isoTime', type: 'temporal' },
             y: { field: 'observation', type: 'quantitative' },
-            color: { condition: { test: 'datum.observation > 10', value: '#ef4444' }, value: '#3b82f6' },
+            color: { condition: { test: 'datum.observation > 10', value: '#ef4444' }, value: '#ef4444' },
             opacity: opacityDot
           }
         }
