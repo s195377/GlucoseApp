@@ -217,6 +217,23 @@
     }
     .drawer-item:hover { background: #f8fafc; }
     .drawer-divider { height: 1px; background: #e2e8f0; margin: 8px 0; }
+
+    /* ── Bottom navigation bar ── */
+    .bottom-nav {
+      display: none; flex-shrink: 0;
+      flex-direction: row; align-items: stretch;
+      height: 68px;
+      background: #fff; border-top: 1.5px solid #e2e8f0;
+    }
+    .bottom-nav.visible { display: flex; }
+    .bottom-nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px; background: none; border: none; cursor: pointer;
+      font-size: 11px; font-weight: 600; color: #94a3b8; padding: 8px 0;
+    }
+    .bottom-nav-item.active { color: #3B6EF0; }
+    .bottom-nav-item.active svg { stroke: #3B6EF0; }
   </style>
 </head>
 <body>
@@ -279,23 +296,6 @@
                   overflow:hidden;margin-bottom:16px;font-size:13px;min-height:48px;">
         <div class="chart-loading" style="padding:16px;">Loading latest readings…</div>
       </div>
-      <!-- Days / Weeks / Months navigation -->
-      <div class="tabs" style="margin-top:8px;">
-        <button class="tab active" onclick="navigate('screen-blood-daily')">Days</button>
-        <button class="tab"        onclick="navigate('screen-blood-weekly')">Weeks</button>
-        <button class="tab"        onclick="navigate('screen-blood-data')">Months</button>
-      </div>
-
-      <div style="flex:1;"></div>
-
-      <button class="action-btn" onclick="navigate('screen-blood-data')" style="margin-bottom:0;">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <rect x="2"  y="13" width="5" height="8"  rx="1" fill="#1a1a1a"/>
-          <rect x="9"  y="8"  width="5" height="13" rx="1" fill="#1a1a1a"/>
-          <rect x="16" y="3"  width="5" height="18" rx="1" fill="#1a1a1a"/>
-        </svg>
-        View data
-      </button>
     </div>
   </div>
 
@@ -333,7 +333,7 @@
              stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 20h16"/>
         </svg>
-        Upload file
+        Upload filemake
       </button>
       <button class="upload-btn">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -551,6 +551,44 @@
       </div>
     </div>
   </div>
+
+  <!-- Bottom navigation bar -->
+  <nav id="bottom-nav" class="bottom-nav">
+    <button class="bottom-nav-item" id="nav-days" onclick="navigate('screen-blood-daily')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      Days
+    </button>
+    <button class="bottom-nav-item" id="nav-weeks" onclick="navigate('screen-blood-weekly')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/>
+        <line x1="7" y1="4" x2="7" y2="9"/>
+        <line x1="12" y1="4" x2="12" y2="9"/>
+        <line x1="17" y1="4" x2="17" y2="9"/>
+        <line x1="3" y1="14" x2="21" y2="14"/>
+      </svg>
+      Weeks
+    </button>
+    <button class="bottom-nav-item" id="nav-months" onclick="navigate('screen-blood-data')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+        <circle cx="8"  cy="15" r="1" fill="#94a3b8" stroke="none"/>
+        <circle cx="12" cy="15" r="1" fill="#94a3b8" stroke="none"/>
+        <circle cx="16" cy="15" r="1" fill="#94a3b8" stroke="none"/>
+        <circle cx="8"  cy="19" r="1" fill="#94a3b8" stroke="none"/>
+        <circle cx="12" cy="19" r="1" fill="#94a3b8" stroke="none"/>
+      </svg>
+      Months
+    </button>
+  </nav>
 
 </div><!-- end .phone -->
 
@@ -1292,6 +1330,30 @@
   var navStack = ['screen-home'];
   var phone    = document.getElementById('phone');
 
+  var bottomNavScreens = {'screen-home':1,'screen-blood-daily':1,'screen-blood-weekly':1,'screen-blood-data':1};
+  var bottomNavMap = {'screen-blood-daily':'nav-days','screen-blood-weekly':'nav-weeks','screen-blood-data':'nav-months'};
+
+  function updateBottomNav(screenId) {
+    var nav = document.getElementById('bottom-nav');
+    if (bottomNavScreens[screenId]) {
+      nav.classList.add('visible');
+    } else {
+      nav.classList.remove('visible');
+    }
+    document.querySelectorAll('.bottom-nav-item').forEach(function(el) {
+      el.classList.remove('active');
+      el.querySelector('svg').style.stroke = '#94a3b8';
+      el.querySelectorAll('circle[fill]').forEach(function(c){ c.setAttribute('fill','#94a3b8'); });
+    });
+    var activeId = bottomNavMap[screenId];
+    if (activeId) {
+      var activeEl = document.getElementById(activeId);
+      activeEl.classList.add('active');
+      activeEl.querySelector('svg').style.stroke = '#3B6EF0';
+      activeEl.querySelectorAll('circle[fill]').forEach(function(c){ c.setAttribute('fill','#3B6EF0'); });
+    }
+  }
+
   function navigate(screenId) {
     var cur = document.querySelector('.screen.active');
     if (cur) cur.classList.remove('active');
@@ -1304,6 +1366,7 @@
       if (screenId === 'screen-blood-daily')   renderDaily();
     }
     phone.style.background = BG;
+    updateBottomNav(screenId);
   }
 
   function goBack() {
@@ -1314,6 +1377,7 @@
       var prev = document.getElementById(navStack[navStack.length-1]);
       if (prev) prev.classList.add('active');
       phone.style.background = BG;
+      updateBottomNav(navStack[navStack.length-1]);
     }
   }
 
@@ -1324,6 +1388,7 @@
       String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   }
   tick(); setInterval(tick, 10000);
+  updateBottomNav('screen-home');
 </script>
 </body>
 </html>
