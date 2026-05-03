@@ -70,12 +70,12 @@
       text-transform: uppercase; letter-spacing: 0.06em;
     }
     .btn-back {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 2px solid #1a1a1a; background: none;
+      width: 36px; height: 36px;
+      border: none; background: none;
       display: flex; align-items: center; justify-content: center;
       font-size: 17px; cursor: pointer; color: #1a1a1a;
     }
-    .btn-back:hover { background: rgba(0,0,0,0.07); }
+    .btn-back:hover { background: none; }
     .btn-menu { background: none; border: none; font-size: 26px; cursor: pointer; color: #1a1a1a; }
 
     .content {
@@ -286,7 +286,7 @@
   <!-- SCREEN 1 — Home (landing screen) -->
   <div id="screen-home" class="screen active">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -302,7 +302,7 @@
   <!-- SCREEN 1b — Profile (hamburger menu) -->
   <div id="screen-profile" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -322,7 +322,7 @@
   <!-- SCREEN 2 — Upload data -->
   <div id="screen-upload" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -352,7 +352,7 @@
   <!-- SCREEN 3 — Settings -->
   <div id="screen-settings" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -365,7 +365,7 @@
   <!-- SCREEN — Daily view -->
   <div id="screen-blood-daily" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -414,7 +414,7 @@
   <!-- SCREEN — Weekly view -->
   <div id="screen-blood-weekly" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -461,7 +461,7 @@
   <!-- SCREEN 4 — Blood sugar: Calendar overview -->
   <div id="screen-blood-calendar" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
@@ -479,7 +479,7 @@
   <!-- SCREEN 5 — Blood sugar: Max / Min / Average (direct Vega chart) -->
   <div id="screen-blood-data" class="screen">
     <div class="topbar">
-      <button class="btn-back" onclick="goBack()">&#8592;</button>
+      <button class="btn-back" onclick="navigate('screen-home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></button>
       <span class="topbar-brand">Glucosee</span>
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
