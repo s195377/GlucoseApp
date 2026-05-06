@@ -747,7 +747,7 @@
   function statusTheme(v) {
     if (v===null)  return {bg:'#f8fafc', text:'#cbd5e1'};
     if (v>10)      return {bg:'#fee2e2', text:'#991b1b'};
-    if (v<4.4)     return {bg:'#e0f2fe', text:'#075985'};
+    if (v<4.4)     return {bg:'#fee2e2', text:'#991b1b'};
     return {bg:'#f8fafc', text:'#1e293b'};
   }
 
@@ -1026,6 +1026,20 @@
         { data: { values: nightBands },
           mark: { type: 'rect', color: '#f1f5f9', opacity: 1 },
           encoding: { x: { field:'start', type:'temporal' }, x2: { field:'end', type:'temporal' } }
+        },
+        // Normal range band (4.4 – 10 mmol/l)
+        { data: { values: [{}] },
+          mark: { type: 'rect', color: '#dcfce7', opacity: 0.45 },
+          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 10 } }
+        },
+        // Threshold rules
+        { data: { values: [{}] },
+          mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
+          encoding: { y: { datum: 4.4, type: 'quantitative' } }
+        },
+        { data: { values: [{}] },
+          mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
+          encoding: { y: { datum: 10, type: 'quantitative' } }
         },
         // Period area fill (highlight mode only)
         { data: { values: enriched },
