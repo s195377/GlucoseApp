@@ -372,33 +372,41 @@
     <div class="chart-screen">
       <div class="chart-header">
         <div class="chart-header-title">Blood Sugar Levels</div>
-        <div class="chart-header-sub">Daily</div>
+        <div style="display:flex;gap:5px;margin-top:4px;">
+          <button id="tab-period-All"       onclick="setDayPeriod('All')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#1a1a1a;color:#fff;">All</button>
+          <button id="tab-period-Morning"   onclick="setDayPeriod('Morning')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Morning</button>
+          <button id="tab-period-Afternoon" onclick="setDayPeriod('Afternoon')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Afternoon</button>
+          <button id="tab-period-Evening"   onclick="setDayPeriod('Evening')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Evening</button>
+          <button id="tab-period-Night"     onclick="setDayPeriod('Night')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Night</button>
+        </div>
       </div>
       <div class="chart-scroll">
-        <!-- Day label -->
-        <div id="daily-label" style="text-align:center;font-size:13px;font-weight:600;
-             color:#334155;flex-shrink:0;padding:2px 0;"></div>
+        <!-- Chart -->
+        <div id="daily-chart"
+             style="background:white;border-radius:10px;border:1px solid #e2e8f0;
+                    padding:4px;overflow:visible;"></div>
 
-        <!-- Chart flanked by arrows -->
-        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+        <!-- Day navigator — below chart, matching Insight style -->
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    flex-shrink:0;padding:4px 0;">
           <button onclick="prevDay()"
                   style="background:none;border:2px solid #1a1a1a;border-radius:50%;
-                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8249;</button>
-          <div id="daily-chart"
-               style="background:white;border-radius:10px;border:1px solid #e2e8f0;
-                      padding:4px;flex:1;min-width:0;overflow:visible;"></div>
+                         width:30px;height:30px;font-size:16px;cursor:pointer;line-height:1;">&#8249;</button>
+          <span id="daily-label"
+                style="font-size:13px;font-weight:600;color:#334155;text-align:center;flex:1;padding:0 6px;"></span>
           <button onclick="nextDay()"
                   style="background:none;border:2px solid #1a1a1a;border-radius:50%;
-                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8250;</button>
-        </div>
-
-        <!-- Period filter tabs -->
-        <div class="tabs" style="gap:5px;flex-shrink:0;">
-          <button class="tab active" onclick="setDayPeriod(this,'All')"       style="font-size:11px;padding:8px 0;">All</button>
-          <button class="tab"        onclick="setDayPeriod(this,'Morning')"   style="font-size:11px;padding:8px 0;">Morning</button>
-          <button class="tab"        onclick="setDayPeriod(this,'Afternoon')" style="font-size:11px;padding:8px 0;">Afternoon</button>
-          <button class="tab"        onclick="setDayPeriod(this,'Evening')"   style="font-size:11px;padding:8px 0;">Evening</button>
-          <button class="tab"        onclick="setDayPeriod(this,'Night')"     style="font-size:11px;padding:8px 0;">Night</button>
+                         width:30px;height:30px;font-size:16px;cursor:pointer;line-height:1;">&#8250;</button>
         </div>
 
         <!-- Reading list -->
@@ -419,33 +427,52 @@
       <button class="btn-menu" onclick="openDrawer()">&#9776;</button>
     </div>
     <div class="chart-screen">
-      <div class="chart-header"><div class="chart-header-title">Blood Sugar Levels</div><div class="chart-header-sub">Weekly</div></div>
+      <div class="chart-header">
+        <div class="chart-header-title">Blood Sugar Levels</div>
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          <button onclick="setMonthView('monthly')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#f1f5f9;color:#64748b;">Monthly</button>
+          <button onclick="setMonthView('weekly')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#1a1a1a;color:#fff;">Weekly</button>
+        </div>
+        <div style="display:flex;gap:5px;margin-top:4px;">
+          <button id="tab-week-period-All"       onclick="setWeekPeriod('All')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#1a1a1a;color:#fff;">All</button>
+          <button id="tab-week-period-Morning"   onclick="setWeekPeriod('Morning')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Morning</button>
+          <button id="tab-week-period-Afternoon" onclick="setWeekPeriod('Afternoon')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Afternoon</button>
+          <button id="tab-week-period-Evening"   onclick="setWeekPeriod('Evening')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Evening</button>
+          <button id="tab-week-period-Night"     onclick="setWeekPeriod('Night')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:11px;font-weight:600;background:#f1f5f9;color:#64748b;">Night</button>
+        </div>
+      </div>
 
       <div class="chart-scroll">
-        <!-- Week label -->
-        <div id="weekly-label" style="text-align:center;font-size:13px;font-weight:600;
-             color:#334155;flex-shrink:0;padding:2px 0;"></div>
+        <!-- Chart -->
+        <div id="weekly-chart"
+             style="background:white;border-radius:10px;border:1px solid #e2e8f0;
+                    padding:6px;overflow:hidden;"></div>
 
-        <!-- Chart flanked by arrows -->
-        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+        <!-- Week navigator — below chart, matching Daily style -->
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    flex-shrink:0;padding:4px 0;">
           <button onclick="prevWeek()"
                   style="background:none;border:2px solid #1a1a1a;border-radius:50%;
-                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8249;</button>
-          <div id="weekly-chart"
-               style="background:white;border-radius:10px;border:1px solid #e2e8f0;
-                      padding:6px;flex:1;overflow:hidden;"></div>
+                         width:30px;height:30px;font-size:16px;cursor:pointer;line-height:1;">&#8249;</button>
+          <span id="weekly-label"
+                style="font-size:13px;font-weight:600;color:#334155;text-align:center;flex:1;padding:0 6px;"></span>
           <button onclick="nextWeek()"
                   style="background:none;border:2px solid #1a1a1a;border-radius:50%;
-                         width:30px;height:30px;font-size:16px;cursor:pointer;flex-shrink:0;">&#8250;</button>
-        </div>
-
-        <!-- Period filter tabs — between chart and log -->
-        <div class="tabs" style="gap:5px;flex-shrink:0;">
-          <button class="tab active" onclick="setWeekPeriod(this,'All')"       style="font-size:11px;padding:8px 0;">All</button>
-          <button class="tab"        onclick="setWeekPeriod(this,'Morning')"   style="font-size:11px;padding:8px 0;">Morning</button>
-          <button class="tab"        onclick="setWeekPeriod(this,'Afternoon')" style="font-size:11px;padding:8px 0;">Afternoon</button>
-          <button class="tab"        onclick="setWeekPeriod(this,'Evening')"   style="font-size:11px;padding:8px 0;">Evening</button>
-          <button class="tab"        onclick="setWeekPeriod(this,'Night')"     style="font-size:11px;padding:8px 0;">Night</button>
+                         width:30px;height:30px;font-size:16px;cursor:pointer;line-height:1;">&#8250;</button>
         </div>
 
         <!-- Reading list -->
@@ -486,7 +513,14 @@
     <div class="chart-screen">
       <div class="chart-header">
         <div class="chart-header-title">Blood Sugar Levels</div>
-        <div class="chart-header-sub">Monthly</div>
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          <button id="tab-monthly-month" onclick="setMonthView('monthly')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#1a1a1a;color:#fff;">Monthly</button>
+          <button id="tab-monthly-week" onclick="setMonthView('weekly')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#f1f5f9;color:#64748b;">Weekly</button>
+        </div>
       </div>
 
 
@@ -516,7 +550,7 @@
           <!-- gradient bar with marker overlay — stops proportional to range 2–17 -->
           <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;
                       background:linear-gradient(to right,
-                        #08306b 0%, #9ecae1 16%, #f7f7f7 34.7%, #fb6a4a 53.3%, #67000d 100%);">
+                        #08306b 0%, #9ecae1 16%, #f7f7f7 34.7%, #fb6a4a 66.7%, #67000d 100%);">
             <div id="legend-markers" style="position:absolute;inset:0;border-radius:6px;
                                             pointer-events:none;overflow:hidden;"></div>
           </div>
@@ -525,7 +559,7 @@
             <span style="position:absolute;left:0%;transform:translateX(0%);color:#08306b;">2</span>
             <span style="position:absolute;left:16%;transform:translateX(-50%);color:#3b82f6;">4.4</span>
             <span style="position:absolute;left:34.7%;transform:translateX(-50%);color:#64748b;">7.2</span>
-            <span style="position:absolute;left:53.3%;transform:translateX(-50%);color:#ef4444;">10</span>
+            <span style="position:absolute;left:66.7%;transform:translateX(-50%);color:#ef4444;">12</span>
             <span style="position:absolute;left:100%;transform:translateX(-100%);color:#67000d;">17</span>
           </div>
           <!-- zone labels — proportionally positioned -->
@@ -533,16 +567,22 @@
             <span style="position:absolute;left:0%;transform:translateX(0%);">Very low</span>
             <span style="position:absolute;left:16%;transform:translateX(-50%);">Low</span>
             <span style="position:absolute;left:34.7%;transform:translateX(-50%);">Normal</span>
-            <span style="position:absolute;left:53.3%;transform:translateX(-50%);">High</span>
+            <span style="position:absolute;left:66.7%;transform:translateX(-50%);">High</span>
             <span style="position:absolute;left:100%;transform:translateX(-100%);">Very high</span>
           </div>
         </div>
 
         <!-- View mode tabs — below legend -->
-        <div class="tabs" style="gap:5px;flex-shrink:0;">
-          <button class="tab active" onclick="setMode(this,'max')"  style="font-size:11px;padding:8px 0;">Daily Max</button>
-          <button class="tab"        onclick="setMode(this,'min')"  style="font-size:11px;padding:8px 0;">Daily Min</button>
-          <button class="tab"        onclick="setMode(this,'mean')" style="font-size:11px;padding:8px 0;">Average</button>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button id="tab-mode-max"  onclick="setMode('max')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#1a1a1a;color:#fff;">Daily Max</button>
+          <button id="tab-mode-min"  onclick="setMode('min')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#f1f5f9;color:#64748b;">Daily Min</button>
+          <button id="tab-mode-mean" onclick="setMode('mean')"
+                  style="flex:1;padding:6px 0;border-radius:20px;border:none;cursor:pointer;
+                         font-size:12px;font-weight:600;background:#f1f5f9;color:#64748b;">Extreme</button>
         </div>
 
         <div id="reading-list"><div class="chart-loading">Click a date to see glucose readings</div></div>
@@ -560,31 +600,13 @@
         <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
         <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
       </svg>
-      Days
-    </button>
-    <button class="bottom-nav-item" id="nav-weeks" onclick="navigate('screen-blood-weekly')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="16" rx="2"/>
-        <line x1="3" y1="9" x2="21" y2="9"/>
-        <line x1="7" y1="4" x2="7" y2="9"/>
-        <line x1="12" y1="4" x2="12" y2="9"/>
-        <line x1="17" y1="4" x2="17" y2="9"/>
-        <line x1="3" y1="14" x2="21" y2="14"/>
-      </svg>
-      Weeks
+      Daily
     </button>
     <button class="bottom-nav-item" id="nav-months" onclick="navigate('screen-blood-data')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-        <circle cx="8"  cy="15" r="1" fill="#94a3b8" stroke="none"/>
-        <circle cx="12" cy="15" r="1" fill="#94a3b8" stroke="none"/>
-        <circle cx="16" cy="15" r="1" fill="#94a3b8" stroke="none"/>
-        <circle cx="8"  cy="19" r="1" fill="#94a3b8" stroke="none"/>
-        <circle cx="12" cy="19" r="1" fill="#94a3b8" stroke="none"/>
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
       </svg>
-      Months
+      Insight
     </button>
   </nav>
 
@@ -620,6 +642,20 @@
     if (idx < availableMonths.length-1) { currentMonth = availableMonths[idx+1]; renderChart(); }
   }
 
+  function setMonthView(view) {
+    var btnMonth = document.getElementById('tab-monthly-month');
+    var btnWeek  = document.getElementById('tab-monthly-week');
+    if (view === 'weekly') {
+      btnMonth.style.background = '#f1f5f9'; btnMonth.style.color = '#64748b';
+      btnWeek.style.background  = '#1a1a1a'; btnWeek.style.color  = '#fff';
+      navigate('screen-blood-weekly');
+    } else {
+      btnMonth.style.background = '#1a1a1a'; btnMonth.style.color = '#fff';
+      btnWeek.style.background  = '#f1f5f9'; btnWeek.style.color  = '#64748b';
+      navigate('screen-blood-data');
+    }
+  }
+
   function parseCSV(text) {
     return text.trim().split('\n').slice(1).map(function(line) {
       var p  = line.split(',');
@@ -643,8 +679,8 @@
   }
 
   function buildSpec(monthData, mode) {
-    var obsField = mode==='max' ? 'max_obs' : mode==='min' ? 'min_obs' : 'mean_obs';
-    var legTitle = mode==='max' ? 'Daily Max' : mode==='min' ? 'Daily Min' : 'Daily Avg';
+    var obsField = mode==='max' ? 'max_obs' : mode==='min' ? 'min_obs' : 'extreme_obs';
+    var legTitle = mode==='max' ? 'Daily Max' : mode==='min' ? 'Daily Min' : 'Daily Extreme';
 
     // per-day aggregates
     var byDay = {};
@@ -655,11 +691,17 @@
     });
     var enriched = monthData.map(function(d) {
       var vals = byDay[d.dayKey] || [];
+      var extremeVal = vals.length ? vals.reduce(function(best, v) {
+        var dev  = v  < 4.4 ? (4.4 - v)  : v  > 12 ? (v  - 12) : 0;
+        var bdev = best < 4.4 ? (4.4 - best) : best > 12 ? (best - 12) : 0;
+        return dev > bdev ? v : best;
+      }, vals[0]) : null;
       return Object.assign({}, d, {
-        isoTime:  d.displayTime.toISOString(),
-        max_obs:  vals.length ? Math.max.apply(null,vals) : null,
-        min_obs:  vals.length ? Math.min.apply(null,vals) : null,
-        mean_obs: vals.length ? vals.reduce(function(a,b){return a+b;},0)/vals.length : null
+        isoTime:      d.displayTime.toISOString(),
+        max_obs:      vals.length ? Math.max.apply(null,vals) : null,
+        min_obs:      vals.length ? Math.min.apply(null,vals) : null,
+        mean_obs:     vals.length ? vals.reduce(function(a,b){return a+b;},0)/vals.length : null,
+        extreme_obs:  extremeVal
       });
     });
 
@@ -746,7 +788,7 @@
 
   function statusTheme(v) {
     if (v===null)  return {bg:'#f8fafc', text:'#cbd5e1'};
-    if (v>10)      return {bg:'#fee2e2', text:'#991b1b'};
+    if (v>12)      return {bg:'#fee2e2', text:'#991b1b'};
     if (v<4.4)     return {bg:'#fee2e2', text:'#991b1b'};
     return {bg:'#f8fafc', text:'#1e293b'};
   }
@@ -891,10 +933,15 @@
     if (currentDayIdx < dailyStartDays.length-1) { currentDayIdx++; renderDaily(); }
   }
 
-  function setDayPeriod(btn, period) {
-    var tabs = btn.closest('.tabs').querySelectorAll('.tab');
-    for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
-    btn.classList.add('active');
+  function setDayPeriod(period) {
+    ['All','Morning','Afternoon','Evening','Night'].forEach(function(p) {
+      var btn = document.getElementById('tab-period-' + p);
+      if (p === period) {
+        btn.style.background = '#1a1a1a'; btn.style.color = '#fff';
+      } else {
+        btn.style.background = '#f1f5f9'; btn.style.color = '#64748b';
+      }
+    });
     currentDayFilter = period;
     renderDaily();
   }
@@ -904,7 +951,7 @@
       var obs = d.observation;
       // 0 = normal (green), 1 = extreme (red)
       var severity = (obs >= 5 && obs <= 7) ? 0
-        : obs > 7  ? Math.min(1, (obs - 7) / (11.5 - 7))
+        : obs > 7  ? Math.min(1, (obs - 7) / (13.5 - 7))
         : obs >= 3.8 ? Math.min(1, (5 - obs) / (5 - 3.8))
         : 1;
       return Object.assign({}, d, { isoTime: d.displayTime.toISOString(), severity: severity });
@@ -1027,10 +1074,10 @@
           mark: { type: 'rect', color: '#f1f5f9', opacity: 1 },
           encoding: { x: { field:'start', type:'temporal' }, x2: { field:'end', type:'temporal' } }
         },
-        // Normal range band (4.4 – 10 mmol/l)
+        // Normal range band (4.4 – 12 mmol/l)
         { data: { values: [{}] },
           mark: { type: 'rect', color: '#dcfce7', opacity: 0.45 },
-          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 10 } }
+          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 12 } }
         },
         // Threshold rules
         { data: { values: [{}] },
@@ -1039,7 +1086,7 @@
         },
         { data: { values: [{}] },
           mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
-          encoding: { y: { datum: 10, type: 'quantitative' } }
+          encoding: { y: { datum: 12, type: 'quantitative' } }
         },
         // Period area fill (highlight mode only)
         { data: { values: enriched },
@@ -1177,10 +1224,15 @@
     if (currentWeekIdx < weeklyStartDays.length-1) { currentWeekIdx++; renderWeekly(); }
   }
 
-  function setWeekPeriod(btn, period) {
-    var tabs = btn.closest('.tabs').querySelectorAll('.tab');
-    for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
-    btn.classList.add('active');
+  function setWeekPeriod(period) {
+    ['All','Morning','Afternoon','Evening','Night'].forEach(function(p) {
+      var btn = document.getElementById('tab-week-period-' + p);
+      if (p === period) {
+        btn.style.background = '#1a1a1a'; btn.style.color = '#fff';
+      } else {
+        btn.style.background = '#f1f5f9'; btn.style.color = '#64748b';
+      }
+    });
     currentWeekFilter = period;
     renderWeekly();
   }
@@ -1203,12 +1255,12 @@
       layer: [
         // Normal range band
         { mark: { type: 'rect', color: '#dcfce7', opacity: 0.45 },
-          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 10 } } },
+          encoding: { y: { datum: 4.4, type: 'quantitative' }, y2: { datum: 12 } } },
         // Threshold rules
         { mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
           encoding: { y: { datum: 4.4, type: 'quantitative' } } },
         { mark: { type: 'rule', color: '#ffffff', strokeDash: [4,2], size: 1 },
-          encoding: { y: { datum: 10,  type: 'quantitative' } } },
+          encoding: { y: { datum: 12,  type: 'quantitative' } } },
         // Bars (period coloured)
         { mark: { type: 'bar', width: 6, tooltip: true },
           encoding: {
@@ -1234,11 +1286,11 @@
         },
         // Out-of-range dots
         { mark: { type: 'circle', size: 35 },
-          transform: [{ filter: 'datum.observation > 10 || datum.observation < 4.4' }],
+          transform: [{ filter: 'datum.observation > 12 || datum.observation < 4.4' }],
           encoding: {
             x: { field: 'isoTime', type: 'temporal' },
             y: { field: 'observation', type: 'quantitative' },
-            color: { condition: { test: 'datum.observation > 10', value: '#ef4444' }, value: '#ef4444' },
+            color: { condition: { test: 'datum.observation > 12', value: '#ef4444' }, value: '#ef4444' },
             opacity: opacityDot
           }
         }
@@ -1297,11 +1349,16 @@
       : '<div class="chart-loading">No data for this week</div>';
   }
 
-  function setMode(btn, mode) {
-    var tabs = btn.closest('.tabs').querySelectorAll('.tab');
-    for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
-    btn.classList.add('active');
+  function setMode(mode) {
     currentMode = mode;
+    ['max','min','mean'].forEach(function(m) {
+      var btn = document.getElementById('tab-mode-' + m);
+      if (m === mode) {
+        btn.style.background = '#1a1a1a'; btn.style.color = '#fff';
+      } else {
+        btn.style.background = '#f1f5f9'; btn.style.color = '#64748b';
+      }
+    });
     renderChart();
   }
 
@@ -1350,7 +1407,7 @@
   var phone    = document.getElementById('phone');
 
   var bottomNavScreens = {'screen-home':1,'screen-blood-daily':1,'screen-blood-weekly':1,'screen-blood-data':1};
-  var bottomNavMap = {'screen-blood-daily':'nav-days','screen-blood-weekly':'nav-weeks','screen-blood-data':'nav-months'};
+  var bottomNavMap = {'screen-blood-daily':'nav-days','screen-blood-weekly':'nav-months','screen-blood-data':'nav-months'};
 
   function updateBottomNav(screenId) {
     var nav = document.getElementById('bottom-nav');
