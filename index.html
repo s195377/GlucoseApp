@@ -424,11 +424,12 @@
                     margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
           Glucose level (mmol/l)
         </div>
-        <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;
-                    background:linear-gradient(to right,
-                      #ef4444 0%, #ef4444 12%, #eab308 20%,
-                      #22c55e 27%, #22c55e 33%,
-                      #eab308 55%, #ef4444 77%, #ef4444 100%);">
+        <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;">
+          <div style="position:absolute;inset:0;border-radius:6px;opacity:0.80;filter:blur(1px);
+                      background:linear-gradient(to right,
+                        #ef4444 0%, #ef4444 12%, #eab308 20%,
+                        #22c55e 27%, #22c55e 33%,
+                        #eab308 55%, #ef4444 77%, #ef4444 100%);"></div>
           <div id="daily-legend-markers" style="position:absolute;inset:0;border-radius:6px;
                                                 pointer-events:none;overflow:hidden;"></div>
         </div>
@@ -580,9 +581,10 @@
             Glucose level (mmol/l)
           </div>
           <!-- gradient bar with marker overlay — stops proportional to range 2–17 -->
-          <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;
-                      background:linear-gradient(to right,
-                        #08306b 0%, #9ecae1 16%, #f7f7f7 32.7%, #f7f7f7 50%, #fb6a4a 75%, #67000d 100%);">
+          <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;">
+            <div style="position:absolute;inset:0;border-radius:6px;opacity:0.80;filter:blur(1px);
+                        background:linear-gradient(to right,
+                          #08306b 0%, #9ecae1 16%, #f7f7f7 32.7%, #f7f7f7 50%, #fb6a4a 75%, #67000d 100%);"></div>
             <div id="legend-markers" style="position:absolute;inset:0;border-radius:6px;
                                             pointer-events:none;overflow:hidden;"></div>
           </div>
@@ -840,7 +842,7 @@
       var col = PERIOD_COLORS[r.period] || '#1a1a1a';
       return '<div style="position:absolute;left:'+pct+'%;top:0;bottom:0;'
            + 'transform:translateX(-50%);width:3px;'
-           + 'background:'+col+';opacity:0.85;border-radius:1px;"></div>';
+           + 'background:'+col+';opacity:1;border-radius:1px;"></div>';
     }).join('');
     document.getElementById('legend-markers').innerHTML = markers;
 
@@ -1191,7 +1193,7 @@
       var col = PERIOD_COLORS[r.period] || '#1a1a1a';
       return '<div style="position:absolute;left:' + pct + '%;top:0;bottom:0;'
            + 'transform:translateX(-50%);width:3px;'
-           + 'background:' + col + ';opacity:0.85;border-radius:1px;"></div>';
+           + 'background:' + col + ';opacity:1;border-radius:1px;"></div>';
     }).join('');
     document.getElementById('daily-legend-markers').innerHTML = markers;
 
