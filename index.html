@@ -394,7 +394,7 @@
         <!-- Chart -->
         <div id="daily-chart"
              style="background:white;border-radius:10px;border:1px solid #e2e8f0;
-                    padding:4px;overflow:visible;"></div>
+                    padding:4px;overflow:visible;width:100%;"></div>
 
         <!-- Day navigator — below chart, matching Insight style -->
         <div style="display:flex;align-items:center;justify-content:space-between;
@@ -414,6 +414,38 @@
              border:1px solid #e2e8f0;overflow:hidden;flex-shrink:0;font-size:13px;
              max-height:220px;overflow-y:auto;">
           <div class="chart-loading">Loading…</div>
+        </div>
+      </div>
+
+      <!-- Glucose legend — fixed above bottom nav -->
+      <div style="background:white;border-radius:10px;border:1px solid #e2e8f0;
+                  padding:10px 14px;flex-shrink:0;margin:0 0 6px;">
+        <div style="font-size:11px;font-weight:600;color:#64748b;
+                    margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">
+          Glucose level (mmol/l)
+        </div>
+        <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;
+                    background:linear-gradient(to right,
+                      #ef4444 0%, #ef4444 12%, #eab308 20%,
+                      #22c55e 27%, #22c55e 33%,
+                      #eab308 55%, #ef4444 77%, #ef4444 100%);">
+          <div id="daily-legend-markers" style="position:absolute;inset:0;border-radius:6px;
+                                                pointer-events:none;overflow:hidden;"></div>
+        </div>
+        <div style="position:relative;height:16px;font-size:10px;font-weight:600;">
+          <span style="position:absolute;left:0%;transform:translateX(0%);color:#ef4444;">2</span>
+          <span style="position:absolute;left:12%;transform:translateX(-50%);color:#eab308;">3.8</span>
+          <span style="position:absolute;left:20%;transform:translateX(-50%);color:#22c55e;">5</span>
+          <span style="position:absolute;left:33%;transform:translateX(-50%);color:#22c55e;">7</span>
+          <span style="position:absolute;left:77%;transform:translateX(-50%);color:#eab308;">13.5</span>
+          <span style="position:absolute;left:100%;transform:translateX(-100%);color:#ef4444;">17</span>
+        </div>
+        <div style="position:relative;height:14px;margin-top:3px;font-size:9px;color:#94a3b8;">
+          <span style="position:absolute;left:0%;transform:translateX(0%);">Very low</span>
+          <span style="position:absolute;left:16%;transform:translateX(-50%);">Low</span>
+          <span style="position:absolute;left:33%;transform:translateX(-50%);">Normal</span>
+          <span style="position:absolute;left:77%;transform:translateX(-50%);">High</span>
+          <span style="position:absolute;left:100%;transform:translateX(-100%);">Very high</span>
         </div>
       </div>
     </div>
@@ -550,7 +582,7 @@
           <!-- gradient bar with marker overlay — stops proportional to range 2–17 -->
           <div style="position:relative;height:14px;border-radius:6px;margin-bottom:5px;
                       background:linear-gradient(to right,
-                        #08306b 0%, #9ecae1 16%, #f7f7f7 34.7%, #fb6a4a 66.7%, #67000d 100%);">
+                        #08306b 0%, #9ecae1 16%, #f7f7f7 32.7%, #f7f7f7 50%, #fb6a4a 75%, #67000d 100%);">
             <div id="legend-markers" style="position:absolute;inset:0;border-radius:6px;
                                             pointer-events:none;overflow:hidden;"></div>
           </div>
@@ -558,16 +590,17 @@
           <div style="position:relative;height:16px;font-size:10px;font-weight:600;">
             <span style="position:absolute;left:0%;transform:translateX(0%);color:#08306b;">2</span>
             <span style="position:absolute;left:16%;transform:translateX(-50%);color:#3b82f6;">4.4</span>
-            <span style="position:absolute;left:34.7%;transform:translateX(-50%);color:#64748b;">7.2</span>
-            <span style="position:absolute;left:66.7%;transform:translateX(-50%);color:#ef4444;">12</span>
+            <span style="position:absolute;left:32.7%;transform:translateX(-50%);color:#64748b;">6.9</span>
+            <span style="position:absolute;left:50%;transform:translateX(-50%);color:#64748b;">9.5</span>
+            <span style="position:absolute;left:75%;transform:translateX(-50%);color:#ef4444;">13.3</span>
             <span style="position:absolute;left:100%;transform:translateX(-100%);color:#67000d;">17</span>
           </div>
           <!-- zone labels — proportionally positioned -->
           <div style="position:relative;height:14px;margin-top:3px;font-size:9px;color:#94a3b8;">
             <span style="position:absolute;left:0%;transform:translateX(0%);">Very low</span>
             <span style="position:absolute;left:16%;transform:translateX(-50%);">Low</span>
-            <span style="position:absolute;left:34.7%;transform:translateX(-50%);">Normal</span>
-            <span style="position:absolute;left:66.7%;transform:translateX(-50%);">High</span>
+            <span style="position:absolute;left:41%;transform:translateX(-50%);">Normal</span>
+            <span style="position:absolute;left:75%;transform:translateX(-50%);">High</span>
             <span style="position:absolute;left:100%;transform:translateX(-100%);">Very high</span>
           </div>
         </div>
@@ -722,8 +755,8 @@
             y:{ field:'weekNum', type:'ordinal', title:null, sort:'ascending', axis:null },
             color:{
               field:obsField, type:'quantitative',
-              scale:{ type:'linear', domain:[2,5,7.2,12,17],
-                      range:['#08306b','#9ecae1','#f7f7f7','#fb6a4a','#67000d'], clamp:true },
+              scale:{ type:'linear', domain:[2,4.4,6.9,9.5,13.25,17],
+                      range:['#08306b','#9ecae1','#f7f7f7','#f7f7f7','#fb6a4a','#67000d'], clamp:true },
               condition:{ test:'datum.observation === null', value:'#f8fafc' },
               legend: null
             }
@@ -1013,12 +1046,29 @@
       }
     }
 
-    var startISO = dayStr + 'T00:00:00';
-    var endISO   = dayStr + 'T23:59:59';
+    // Compute a centred x domain from actual data (+/- 1 h padding each side)
+    var PADDING_MS = 60 * 60 * 1000; // 1 hour
+    var startISO, endISO;
+    if (dayData.length) {
+      var tsArr  = dayData.map(function(d){ return d.displayTime.getTime(); });
+      var minTs  = Math.min.apply(null, tsArr);
+      var maxTs  = Math.max.apply(null, tsArr);
+      var span   = Math.max(maxTs - minTs, 2 * PADDING_MS); // at least 2 h span
+      var center = (minTs + maxTs) / 2;
+      startISO = new Date(center - span / 2 - PADDING_MS).toISOString();
+      endISO   = new Date(center + span / 2 + PADDING_MS).toISOString();
+    } else {
+      startISO = dayStr + 'T00:00:00';
+      endISO   = dayStr + 'T23:59:59';
+    }
+    // Night bands clipped to the visible x window
+    var dayStart  = new Date(dayStr + 'T00:00:00').getTime();
     var nightBands = [
-      { start: dayStr + 'T00:00:00', end: dayStr + 'T06:00:00' },
-      { start: dayStr + 'T23:00:00', end: dayStr + 'T23:59:59' }
-    ];
+      { start: new Date(Math.max(dayStart,               new Date(startISO).getTime())).toISOString(),
+        end:   new Date(Math.min(dayStart + 6*3600000,   new Date(endISO).getTime())).toISOString() },
+      { start: new Date(Math.max(dayStart + 23*3600000,  new Date(startISO).getTime())).toISOString(),
+        end:   new Date(Math.min(dayStart + 24*3600000-1,new Date(endISO).getTime())).toISOString() }
+    ].filter(function(b){ return new Date(b.start) < new Date(b.end); });
 
     var severityColor = {
       field: 'severity', type: 'quantitative',
@@ -1065,7 +1115,7 @@
 
     return {
       $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-      width: 220, height: 180,
+      width: 'container', height: 200,
       autosize: { type: 'fit', contains: 'padding' },
       resolve: { scale: { x: 'shared', y: 'shared', color: 'independent' } },
       layer: [
@@ -1133,6 +1183,17 @@
 
     vegaEmbed(document.getElementById('daily-chart'),
               buildDailySpec(dayData, dayStr, currentDayFilter), { actions: false });
+
+    // ── update daily legend markers ───────────────────────────────────────
+    var SCALE_MIN = 2, SCALE_MAX = 17;
+    var markers = dayData.map(function(r) {
+      var pct = Math.max(0, Math.min(100, (r.observation - SCALE_MIN) / (SCALE_MAX - SCALE_MIN) * 100));
+      var col = PERIOD_COLORS[r.period] || '#1a1a1a';
+      return '<div style="position:absolute;left:' + pct + '%;top:0;bottom:0;'
+           + 'transform:translateX(-50%);width:3px;'
+           + 'background:' + col + ';opacity:0.85;border-radius:1px;"></div>';
+    }).join('');
+    document.getElementById('daily-legend-markers').innerHTML = markers;
 
     var listDiv = document.getElementById('daily-list');
     var rows = dayData.map(function(r) {
